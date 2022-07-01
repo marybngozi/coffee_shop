@@ -95,8 +95,13 @@ class Drink(db.Model):
     '''
 
     def insert(self):
-        db.session.add(self)
-        db.session.commit()
+        try:
+            db.session.add(self)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(e)
+            raise Exception("Drink not inserted")
 
     '''
     delete()
@@ -108,8 +113,13 @@ class Drink(db.Model):
     '''
 
     def delete(self):
-        db.session.delete(self)
-        db.session.commit()
+        try:
+            db.session.delete(self)
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(e)
+            raise Exception("Drink not deleted")
 
     '''
     update()
@@ -122,7 +132,12 @@ class Drink(db.Model):
     '''
 
     def update(self):
-        db.session.commit()
+        try:
+            db.session.commit()
+        except Exception as e:
+            db.session.rollback()
+            print(e)
+            raise Exception("Drink not updated")
 
     def __repr__(self):
         return json.dumps(self.short())
